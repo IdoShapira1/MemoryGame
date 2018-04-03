@@ -43,11 +43,14 @@ public class GameScreen extends AppCompatActivity {
         createButtons(size);
         startTimer(diff);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ct.cancel();
     }
+
+
 
 
     private void createButtons(final int size) {
@@ -73,6 +76,9 @@ public class GameScreen extends AppCompatActivity {
                 ));
                 int id = setPictureForButton((size*size)/2);
                 button.setId(id); // set the picture as the ID
+                button.setBackgroundResource(R.drawable.squarebutton);
+             //   setButtonActivity(size,button,R.drawable.squarebutton);
+             //   button.setEnabled(true);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -113,19 +119,20 @@ public class GameScreen extends AppCompatActivity {
             winChecker(size);
             buttonId1 = -1;
         }else{ // no match
-           // setButtonActivity(size,buttonPressed,R.drawable.squarebutton);
+            setButtonActivity(size,buttonPressed,R.drawable.squarebutton);
            // buttonPressed.setBackgroundResource(android.R.drawable.btn_default);
-            buttonPressed.setBackgroundColor(Color.GRAY);
+            //
+            //buttonPressed.setBackgroundColor(Color.GRAY);
            //buttonPressed.setPadding(300,300,300,300);
             buttonPressed.setClickable(true);
             for(int i =0; i<size ; i++){
                 for(int j =0; j<size ; j++){
                     if (buttons[i][j].getId()== buttonId1)
                     {
-                        //setButtonActivity(size,buttons[i][j],R.drawable.squarebutton);
+                        setButtonActivity(size,buttons[i][j],R.drawable.squarebutton);
                         //buttons[i][j].setBackgroundResource(android.R.drawable.btn_default);
                         //buttons[i][j].setPadding(300,300,300,300);
-                        buttons[i][j].setBackgroundColor(Color.GRAY);
+                        //buttons[i][j].setBackgroundColor(Color.GRAY);
                         buttons[i][j].setClickable(true);
 
                     }
@@ -160,7 +167,7 @@ public class GameScreen extends AppCompatActivity {
 
     private void setButtonActivity( int size,Button button,int pictureId){ // add picture and turn unclickable
         //lock button sizes
-        lockButtonsSizes(size);
+        //lockButtonsSizes(size);
         //set background with scaling
         int newWidth = button.getWidth();
         int newHeight = button.getHeight();
