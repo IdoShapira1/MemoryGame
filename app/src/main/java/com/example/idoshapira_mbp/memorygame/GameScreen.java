@@ -10,7 +10,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.view.View;
 import android.widget.TableLayout;
@@ -64,25 +63,27 @@ public class GameScreen extends AppCompatActivity {
             table.addView(tableRow); // add Row to Table
             for(int col = 0; col < size;col++ ){
                 final Button button = new Button(this);
+            //    button.setBackgroundResource(R.drawable.squarebutton);
+                button.setBackgroundColor(Color.GRAY);
+                button.setPadding(500,500,500,500);
                 button.setLayoutParams(new TableRow.LayoutParams( // scaling for buttons
                         TableRow.LayoutParams.MATCH_PARENT,
                         TableRow.LayoutParams.MATCH_PARENT,
                         4.0f
                 ));
-                button.setBackgroundColor(Color.GRAY);
-                button.setPadding(300,300,300,300); //set padding between buttons
                 int id = setPictureForButton((size*size)/2);
                 button.setId(id); // set the picture as the ID
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         setButtonActivity(size,button,button.getId());
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 checkMatch(button,size);
                             }
-                        },400);
+                        },200);
 
                     }
                 });
@@ -92,6 +93,7 @@ public class GameScreen extends AppCompatActivity {
         }
 
     }
+
 
 
     private void checkMatch(Button buttonPressed,int size){
@@ -111,15 +113,21 @@ public class GameScreen extends AppCompatActivity {
             winChecker(size);
             buttonId1 = -1;
         }else{ // no match
+           // setButtonActivity(size,buttonPressed,R.drawable.squarebutton);
+           // buttonPressed.setBackgroundResource(android.R.drawable.btn_default);
             buttonPressed.setBackgroundColor(Color.GRAY);
+           //buttonPressed.setPadding(300,300,300,300);
             buttonPressed.setClickable(true);
             for(int i =0; i<size ; i++){
                 for(int j =0; j<size ; j++){
-                    if (buttons[i][j].getId()== buttonId1 && buttons[i][j].isEnabled())
+                    if (buttons[i][j].getId()== buttonId1)
                     {
+                        //setButtonActivity(size,buttons[i][j],R.drawable.squarebutton);
+                        //buttons[i][j].setBackgroundResource(android.R.drawable.btn_default);
+                        //buttons[i][j].setPadding(300,300,300,300);
                         buttons[i][j].setBackgroundColor(Color.GRAY);
                         buttons[i][j].setClickable(true);
-                        break;
+
                     }
                 }
             }
@@ -178,6 +186,7 @@ public class GameScreen extends AppCompatActivity {
         }
     }
 
+
     private int getRandomImage(int size) {
         TypedArray imgs = getResources().obtainTypedArray(R.array.random_imgs);
         int id = imgs.getResourceId(new Random().nextInt(size), -1); //-1 is default if nothing is found (we don't care)
@@ -185,10 +194,12 @@ public class GameScreen extends AppCompatActivity {
         return id;
     }
 
+
+
     private int getAmountOfButtons(int diff){
         switch (diff){
             case 60:
-                return 5;
+                return 6;
             case 45:
                 return 4;
             case 30:
