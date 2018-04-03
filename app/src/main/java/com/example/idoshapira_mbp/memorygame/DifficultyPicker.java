@@ -5,11 +5,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.content.Intent;
 import android.view.View;
-import java.util.Calendar;
-import java.util.Date;
 import android.widget.TextView;
-
-import java.util.Calendar;
 
 
 public class DifficultyPicker extends AppCompatActivity {
