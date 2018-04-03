@@ -76,7 +76,6 @@ public class GameScreen extends AppCompatActivity {
                 ));
                 int id = setPictureForButton((size*size)/2);
                 button.setId(id); // set the picture as the ID
-                button.setBackgroundResource(R.drawable.squarebutton);
              //   setButtonActivity(size,button,R.drawable.squarebutton);
              //   button.setEnabled(true);
                 button.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +94,8 @@ public class GameScreen extends AppCompatActivity {
                 });
                 buttons[row][col] = button;
                 tableRow.addView(button);
+                button.setBackgroundResource(R.drawable.squarebutton);
+
             }
         }
 

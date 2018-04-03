@@ -19,5 +19,26 @@
     <string name="button_hard">Hard</string>
     <string name="timer">0</string>
 
+    <string-array name="random_imgs">
+        <item>@drawable/image1</item>
+        <item>@drawable/image2</item>
+        <item>@drawable/image3</item>
+        <item>@drawable/image4</item>
+        <item>@drawable/image5</item>
+        <item>@drawable/image6</item>
+        <item>@drawable/image7</item>
+        <item>@drawable/image8</item>
+        <item>@drawable/image9</item>
+        <item>@drawable/image10</item>
+        <item>@drawable/image11</item>
+        <item>@drawable/image12</item>
+        <item>@drawable/image13</item>
+        <item>@drawable/image14</item>
+        <item>@drawable/image15</item>
+        <item>@drawable/image16</item>
+        <item>@drawable/image17</item>
+        <item>@drawable/image18</item>
+    </string-array>
+
 
 </resources>
