@@ -66,8 +66,6 @@ public class GameScreen extends AppCompatActivity {
             table.addView(tableRow); // add Row to Table
             for(int col = 0; col < size;col++ ){
                 final Button button = new Button(this);
-            //    button.setBackgroundResource(R.drawable.squarebutton);
-                button.setBackgroundColor(Color.GRAY);
                 button.setPadding(500,500,500,500);
                 button.setLayoutParams(new TableRow.LayoutParams( // scaling for buttons
                         TableRow.LayoutParams.MATCH_PARENT,
@@ -76,8 +74,6 @@ public class GameScreen extends AppCompatActivity {
                 ));
                 int id = setPictureForButton((size*size)/2);
                 button.setId(id); // set the picture as the ID
-             //   setButtonActivity(size,button,R.drawable.squarebutton);
-             //   button.setEnabled(true);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -108,11 +104,13 @@ public class GameScreen extends AppCompatActivity {
             buttonId1 = buttonPressed.getId();
         else if (buttonId1 == buttonPressed.getId()){ //match!
             setButtonActivity(size,buttonPressed,R.drawable.match);
+            buttonPressed.setId(-1);
             for(int i =0; i<size ; i++){
                 for(int j =0; j<size ; j++){
                     if (buttons[i][j].getId()== buttonId1)
                     {
                         setButtonActivity(size,buttons[i][j],R.drawable.match);
+                        buttons[i][j].setId(-1);
                         break;
                     }
                 }
@@ -121,19 +119,12 @@ public class GameScreen extends AppCompatActivity {
             buttonId1 = -1;
         }else{ // no match
             setButtonActivity(size,buttonPressed,R.drawable.squarebutton);
-           // buttonPressed.setBackgroundResource(android.R.drawable.btn_default);
-            //
-            //buttonPressed.setBackgroundColor(Color.GRAY);
-           //buttonPressed.setPadding(300,300,300,300);
             buttonPressed.setClickable(true);
             for(int i =0; i<size ; i++){
                 for(int j =0; j<size ; j++){
                     if (buttons[i][j].getId()== buttonId1)
                     {
                         setButtonActivity(size,buttons[i][j],R.drawable.squarebutton);
-                        //buttons[i][j].setBackgroundResource(android.R.drawable.btn_default);
-                        //buttons[i][j].setPadding(300,300,300,300);
-                        //buttons[i][j].setBackgroundColor(Color.GRAY);
                         buttons[i][j].setClickable(true);
 
                     }
