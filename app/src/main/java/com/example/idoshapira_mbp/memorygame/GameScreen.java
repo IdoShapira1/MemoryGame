@@ -1,8 +1,6 @@
 package com.example.idoshapira_mbp.memorygame;
 
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,8 +8,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.widget.Button;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -25,8 +23,8 @@ public class GameScreen extends AppCompatActivity {
     CountDownTimer ct;
     TextView name;
     TextView timerText;
-    private Button buttons [][];
-    int buttonId1 = -1;
+    private ImageView buttonsImages[][];
+    int imageId1 = -1; //helps with finding a match
     int winCounter = 0;
     private ArrayList imagesIds1 = new ArrayList();
     private ArrayList imagesIds2= new ArrayList();
@@ -40,7 +38,7 @@ public class GameScreen extends AppCompatActivity {
         timerText = (TextView) findViewById(R.id.timerGameScreen);
         name.setText(getIntent().getStringExtra("name"));
         final int size = getAmountOfButtons(diff);
-        createButtons(size);
+        createButtonsImages(size);
         startTimer(diff);
     }
 
@@ -53,45 +51,44 @@ public class GameScreen extends AppCompatActivity {
 
 
 
-    private void createButtons(final int size) {
+    private void createButtonsImages(final int size) {
         TableLayout table = (TableLayout) findViewById(R.id.tableLay);
-        buttons = new Button[size][size];
+        buttonsImages = new ImageView[size][size];
         for(int row =0 ;row<size;row++){
             TableRow tableRow = new TableRow(this); // add row
-            tableRow.setLayoutParams(new TableLayout.LayoutParams( // scaling for buttons
+            tableRow.setLayoutParams(new TableLayout.LayoutParams( // scaling for buttonsImages
                     TableLayout.LayoutParams.MATCH_PARENT,
                     TableLayout.LayoutParams.MATCH_PARENT,
                     4.0f
             ));
             table.addView(tableRow); // add Row to Table
             for(int col = 0; col < size;col++ ){
-                final Button button = new Button(this);
-                button.setPadding(500,500,500,500);
-                button.setLayoutParams(new TableRow.LayoutParams( // scaling for buttons
+                final ImageView buttonImage = new ImageView(this);
+                buttonImage.setPadding(500,500,500,500);
+                buttonImage.setLayoutParams(new TableRow.LayoutParams( // scaling for buttonsImages
                         TableRow.LayoutParams.MATCH_PARENT,
                         TableRow.LayoutParams.MATCH_PARENT,
                         4.0f
                 ));
                 int id = setPictureForButton((size*size)/2);
-                button.setId(id); // set the picture as the ID
-                button.setOnClickListener(new View.OnClickListener() {
+                buttonImage.setId(id); // set the picture as the ID
+                buttonImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
-                        setButtonActivity(size,button,button.getId());
+                        setButtonActivity(size,buttonImage,buttonImage.getId());
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                checkMatch(button,size);
+                                checkMatch(buttonImage,size);
                             }
                         },200);
 
                     }
                 });
-                buttons[row][col] = button;
-                tableRow.addView(button);
-                button.setBackgroundResource(R.drawable.squarebutton);
-
+                buttonsImages[row][col] = buttonImage;
+                tableRow.addView(buttonImage);
+                buttonImage.setBackgroundResource(R.drawable.squarebutton);
             }
         }
 
@@ -99,38 +96,38 @@ public class GameScreen extends AppCompatActivity {
 
 
 
-    private void checkMatch(Button buttonPressed,int size){
-        if(buttonId1 == -1)
-            buttonId1 = buttonPressed.getId();
-        else if (buttonId1 == buttonPressed.getId()){ //match!
-            setButtonActivity(size,buttonPressed,R.drawable.match);
-            buttonPressed.setId(-1);
+    private void checkMatch(ImageView imagePressed,int size){
+        if(imageId1 == -1)
+            imageId1 = imagePressed.getId();
+        else if (imageId1 == imagePressed.getId()){ //match!
+            setButtonActivity(size,imagePressed,R.drawable.match);
+            imagePressed.setId(-1);
             for(int i =0; i<size ; i++){
                 for(int j =0; j<size ; j++){
-                    if (buttons[i][j].getId()== buttonId1)
+                    if (buttonsImages[i][j].getId()== imageId1)
                     {
-                        setButtonActivity(size,buttons[i][j],R.drawable.match);
-                        buttons[i][j].setId(-1);
+                        setButtonActivity(size, buttonsImages[i][j],R.drawable.match);
+                        buttonsImages[i][j].setId(-1);
                         break;
                     }
                 }
             }
             winChecker(size);
-            buttonId1 = -1;
+            imageId1 = -1;
         }else{ // no match
-            setButtonActivity(size,buttonPressed,R.drawable.squarebutton);
-            buttonPressed.setClickable(true);
+            setButtonActivity(size,imagePressed,R.drawable.squarebutton);
+            imagePressed.setClickable(true);
             for(int i =0; i<size ; i++){
                 for(int j =0; j<size ; j++){
-                    if (buttons[i][j].getId()== buttonId1)
+                    if (buttonsImages[i][j].getId()== imageId1)
                     {
-                        setButtonActivity(size,buttons[i][j],R.drawable.squarebutton);
-                        buttons[i][j].setClickable(true);
+                        setButtonActivity(size, buttonsImages[i][j],R.drawable.squarebutton);
+                        buttonsImages[i][j].setClickable(true);
 
                     }
                 }
             }
-            buttonId1 = -1;
+            imageId1 = -1;
 
         }
 
@@ -157,9 +154,8 @@ public class GameScreen extends AppCompatActivity {
         return id;
     }
 
-    private void setButtonActivity( int size,Button button,int pictureId){ // add picture and turn unclickable
-        //lock button sizes
-        //lockButtonsSizes(size);
+    private void setButtonActivity( int size,ImageView button,int pictureId){ // add picture and turn unclickable
+
         //set background with scaling
         int newWidth = button.getWidth();
         int newHeight = button.getHeight();
@@ -170,20 +166,6 @@ public class GameScreen extends AppCompatActivity {
         button.setClickable(false);
     }
 
-    private void lockButtonsSizes(int size){
-
-        for(int row = 0; row<size;row++){
-            for(int col =0;col<size;col++){
-                Button button = buttons[row][col];
-                int width = button.getWidth();
-                button.setMinWidth(width);
-                button.setMaxWidth(width);
-                int height = button.getHeight();
-                button.setMinHeight(height);
-                button.setMaxHeight(height);
-            }
-        }
-    }
 
 
     private int getRandomImage(int size) {
