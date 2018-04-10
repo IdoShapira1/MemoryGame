@@ -100,13 +100,11 @@ public class GameScreen extends AppCompatActivity {
         if(imageId1 == -1)
             imageId1 = imagePressed.getId();
         else if (imageId1 == imagePressed.getId()){ //match!
-            setButtonActivity(size,imagePressed,R.drawable.match);
             imagePressed.setId(-1);
             for(int i =0; i<size ; i++){
                 for(int j =0; j<size ; j++){
                     if (buttonsImages[i][j].getId()== imageId1)
                     {
-                        setButtonActivity(size, buttonsImages[i][j],R.drawable.match);
                         buttonsImages[i][j].setId(-1);
                         break;
                     }
