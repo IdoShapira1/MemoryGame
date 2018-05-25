@@ -10,13 +10,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 /**
  * Created by idoshapira-mbp on 25/05/2018.
  */
 
 public class FragmentListScore extends Fragment {
 
+    DatabaseHelper mDatabaseHelper;
+
+
     String countries[] = {"Austria","Belgium","Israel"};
+
 
 
     public FragmentListScore(){
@@ -27,16 +33,27 @@ public class FragmentListScore extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
-
-
-
         View view = inflater.inflate(R.layout.score_list_fragment,container,false);
 
         ListView lv = (ListView)view.findViewById(R.id.listScores);
 
+        mDatabaseHelper = new DatabaseHelper(getContext());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,countries);
+        Cursor data = mDatabaseHelper.getAllData();
+        ArrayList<String> listData = new ArrayList<>();
+        ArrayList<Integer> listDiff = new ArrayList<>();
+        ArrayList<Double> listScore = new ArrayList<>();
+        while(data.moveToNext()){
+            listData.add(data.getString(1));
+            listDiff.add(data.getInt(2));
+            listScore.add(data.getDouble(3));
+
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,listData);
         lv.setAdapter(adapter);
+
+
 
 
         return view;
@@ -48,4 +65,5 @@ public class FragmentListScore extends Fragment {
       //  ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,countries);
 
     }
+
 }
