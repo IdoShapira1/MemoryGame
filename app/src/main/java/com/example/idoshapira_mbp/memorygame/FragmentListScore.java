@@ -40,19 +40,15 @@ public class FragmentListScore extends Fragment {
         mDatabaseHelper = new DatabaseHelper(getContext());
 
         Cursor data = mDatabaseHelper.getAllData();
-        ArrayList<String> listData = new ArrayList<>();
-        ArrayList<Integer> listDiff = new ArrayList<>();
-        ArrayList<Double> listScore = new ArrayList<>();
+        ArrayList<PlayerEntry> listDataPlayers = new ArrayList<>();
         while(data.moveToNext()){
-            listData.add(data.getString(1));
-            listDiff.add(data.getInt(2));
-            listScore.add(data.getDouble(3));
+            listDataPlayers.add(new PlayerEntry(data.getString(1),data.getDouble(2),data.getInt(3)));
 
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,listData);
-        lv.setAdapter(adapter);
-
+        PlayerEntryAdapter adapter = new PlayerEntryAdapter(getContext(),R.layout.adapter_view_layout,listDataPlayers);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,listData);
+         lv.setAdapter(adapter);
 
 
 

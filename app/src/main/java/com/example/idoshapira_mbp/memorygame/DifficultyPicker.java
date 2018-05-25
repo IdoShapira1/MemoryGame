@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 public class DifficultyPicker extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +23,9 @@ public class DifficultyPicker extends AppCompatActivity {
         setTexts(name,age);
         setButtons(easy,medium,hard,name);
 
+
     }
+
 
     private void setTexts(TextView name, TextView age){ // Set text for name and age
         name.setText(getIntent().getStringExtra("userName")); // set name
