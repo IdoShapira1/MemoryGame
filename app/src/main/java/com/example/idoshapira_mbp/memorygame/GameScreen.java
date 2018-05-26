@@ -1,5 +1,7 @@
 package com.example.idoshapira_mbp.memorygame;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.res.TypedArray;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -24,10 +26,17 @@ public class GameScreen extends AppCompatActivity {
     TextView name;
     TextView timerText;
     private ImageView buttonsImages[][];
+
+    long animationDuration = 2000; //milliseconds
+    ObjectAnimator rotateAnimation;
+    ObjectAnimator fallAnimation;
+    AnimatorSet animatorSet;
+
     int imageId1 = -1; //helps with finding a match
     int winCounter = 0;
     private ArrayList imagesIds1 = new ArrayList();
     private ArrayList imagesIds2= new ArrayList();
+    private int size;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +46,9 @@ public class GameScreen extends AppCompatActivity {
         name = (TextView) findViewById(R.id.nameGameScreen);
         timerText = (TextView) findViewById(R.id.timerGameScreen);
         name.setText(getIntent().getStringExtra("name"));
-        final int size = getAmountOfButtons(diff);
-        createButtonsImages(size);
+        animatorSet = new AnimatorSet();
+        size = getAmountOfButtons(diff);
+        createButtonsImages();
         startTimer(diff);
     }
 
@@ -51,7 +61,7 @@ public class GameScreen extends AppCompatActivity {
 
 
 
-    private void createButtonsImages(final int size) {
+    private void createButtonsImages() {
         TableLayout table = (TableLayout) findViewById(R.id.tableLay);
         buttonsImages = new ImageView[size][size];
         for(int row =0 ;row<size;row++){
@@ -76,11 +86,11 @@ public class GameScreen extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-                        setButtonActivity(size,buttonImage,buttonImage.getId());
+                        setButtonActivity(buttonImage,buttonImage.getId());
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                checkMatch(buttonImage,size);
+                                checkMatch(buttonImage);
                             }
                         },200);
 
@@ -96,7 +106,7 @@ public class GameScreen extends AppCompatActivity {
 
 
 
-    private void checkMatch(ImageView imagePressed,int size){
+    private void checkMatch(ImageView imagePressed){
         if(imageId1 == -1)
             imageId1 = imagePressed.getId();
         else if (imageId1 == imagePressed.getId()){ //match!
@@ -110,16 +120,16 @@ public class GameScreen extends AppCompatActivity {
                     }
                 }
             }
-            winChecker(size);
+            winChecker();
             imageId1 = -1;
         }else{ // no match
-            setButtonActivity(size,imagePressed,R.drawable.squarebutton);
+            setButtonActivity(imagePressed,R.drawable.squarebutton);
             imagePressed.setClickable(true);
             for(int i =0; i<size ; i++){
                 for(int j =0; j<size ; j++){
                     if (buttonsImages[i][j].getId()== imageId1)
                     {
-                        setButtonActivity(size, buttonsImages[i][j],R.drawable.squarebutton);
+                        setButtonActivity(buttonsImages[i][j],R.drawable.squarebutton);
                         buttonsImages[i][j].setClickable(true);
 
                     }
@@ -131,12 +141,27 @@ public class GameScreen extends AppCompatActivity {
 
     }
 
-    private void winChecker(int size){
+    private void winChecker(){
         winCounter++;
         if(winCounter== (size*size)/2){
             Toast.makeText(getApplicationContext(),"YOU WIN!",Toast.LENGTH_LONG).show();
-            ct.cancel();
-            finish();
+            for(int i =0; i<size ; i++){
+                for(int j =0; j<size ; j++){
+                    rotateAnimation = ObjectAnimator.ofFloat(buttonsImages[i][j],"rotation",0f,1080f);
+                    rotateAnimation.setDuration(animationDuration*2);
+                    rotateAnimation.start();
+
+                }
+            }
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ct.cancel();
+                    finish();
+                }
+            },2000);
+
         }
     }
     private int setPictureForButton(int size){
@@ -152,7 +177,7 @@ public class GameScreen extends AppCompatActivity {
         return id;
     }
 
-    private void setButtonActivity( int size,ImageView button,int pictureId){ // add picture and turn unclickable
+    private void setButtonActivity(ImageView button,int pictureId){ // add picture and turn unclickable
 
         //set background with scaling
         int newWidth = button.getWidth();
@@ -196,8 +221,24 @@ public class GameScreen extends AppCompatActivity {
                 timerText.setText("seconds remaining: " + millisUntilFinished / 1000);
             }
             public void onFinish() {
+                for(int i =0; i<size ; i++){
+                    for(int j =0; j<size ; j++){
+                        rotateAnimation = ObjectAnimator.ofFloat(buttonsImages[i][j],"rotation",0f,360f);
+                        rotateAnimation.setDuration(animationDuration);
+                        fallAnimation = ObjectAnimator.ofFloat(buttonsImages[i][j],"y",1000f);
+                        fallAnimation.setDuration(animationDuration);
+                        animatorSet.playTogether(rotateAnimation,fallAnimation);
+                        animatorSet.start();
+                    }
+                }
+
                 Toast.makeText(getApplicationContext(),"YOU LOSE!",Toast.LENGTH_LONG).show();
-                finish();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                },2000);
             }
         }.start();
     }
