@@ -42,6 +42,7 @@
         <item>@drawable/image17</item>
         <item>@drawable/image18</item>
     </string-array>
+    <string name="title_activity_score_maps">Map</string>
 
 
 </resources>
