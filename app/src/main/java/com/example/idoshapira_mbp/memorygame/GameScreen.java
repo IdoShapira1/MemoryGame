@@ -1,5 +1,7 @@
 package com.example.idoshapira_mbp.memorygame;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.res.TypedArray;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +26,12 @@ public class GameScreen extends AppCompatActivity {
     TextView name;
     TextView timerText;
     private ImageView buttonsImages[][];
+
+    long animationDuration = 2000; //milliseconds
+    ObjectAnimator rotateAnimation;
+    ObjectAnimator fallAnimation;
+    AnimatorSet animatorSet;
+
     int imageId1 = -1; //helps with finding a match
     int winCounter = 0;
     private ArrayList imagesIds1 = new ArrayList();
@@ -37,6 +45,7 @@ public class GameScreen extends AppCompatActivity {
         name = (TextView) findViewById(R.id.nameGameScreen);
         timerText = (TextView) findViewById(R.id.timerGameScreen);
         name.setText(getIntent().getStringExtra("name"));
+        animatorSet = new AnimatorSet();
         final int size = getAmountOfButtons(diff);
         createButtonsImages(size);
         startTimer(diff);
@@ -135,8 +144,23 @@ public class GameScreen extends AppCompatActivity {
         winCounter++;
         if(winCounter== (size*size)/2){
             Toast.makeText(getApplicationContext(),"YOU WIN!",Toast.LENGTH_LONG).show();
-            ct.cancel();
-            finish();
+            for(int i =0; i<2 ; i++){
+                for(int j =0; j<2 ; j++){
+                    rotateAnimation = ObjectAnimator.ofFloat(buttonsImages[i][j],"rotation",0f,1080f);
+                    rotateAnimation.setDuration(animationDuration*2);
+                    rotateAnimation.start();
+
+                }
+            }
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ct.cancel();
+                    finish();
+                }
+            },2000);
+
         }
     }
     private int setPictureForButton(int size){
@@ -196,8 +220,24 @@ public class GameScreen extends AppCompatActivity {
                 timerText.setText("seconds remaining: " + millisUntilFinished / 1000);
             }
             public void onFinish() {
+                for(int i =0; i<2 ; i++){
+                    for(int j =0; j<2 ; j++){
+                        rotateAnimation = ObjectAnimator.ofFloat(buttonsImages[i][j],"rotation",0f,360f);
+                        rotateAnimation.setDuration(animationDuration);
+                        fallAnimation = ObjectAnimator.ofFloat(buttonsImages[i][j],"y",1000f);
+                        fallAnimation.setDuration(animationDuration);
+                        animatorSet.playTogether(rotateAnimation,fallAnimation);
+                        animatorSet.start();
+                    }
+                }
+
                 Toast.makeText(getApplicationContext(),"YOU LOSE!",Toast.LENGTH_LONG).show();
-                finish();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                },2000);
             }
         }.start();
     }
