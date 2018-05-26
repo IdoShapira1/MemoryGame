@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +19,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -25,6 +29,8 @@ import android.os.CountDownTimer;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Random;
+
+import tyrantgit.explosionfield.ExplosionField;
 
 public class GameScreen extends AppCompatActivity implements SensorService.SensorServiceListener {
 
@@ -40,6 +46,7 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
     ObjectAnimator rotateAnimation;
     ObjectAnimator fallAnimation;
     AnimatorSet animatorSet;
+    ExplosionField explosion;
 
     int imageId1 = -1; //helps with finding a match
     int winCounter = 0;
@@ -108,6 +115,7 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
                     }
                 });
                 buttonsImages[row][col] = buttonImage;
+                explosion = ExplosionField.attach2Window(this);
                 tableRow.addView(buttonImage);
                 buttonImage.setBackgroundResource(R.drawable.squarebutton);
             }
@@ -156,11 +164,15 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
         winCounter++;
         if(winCounter== (size*size)/2){
             Toast.makeText(getApplicationContext(),"YOU WIN!",Toast.LENGTH_LONG).show();
+            final Animation hyperAnimation = AnimationUtils.loadAnimation(GameScreen.this, R.anim.explosion);
             for(int i =0; i<size ; i++){
                 for(int j =0; j<size ; j++){
                     rotateAnimation = ObjectAnimator.ofFloat(buttonsImages[i][j],"rotation",0f,1080f);
                     rotateAnimation.setDuration(animationDuration*2);
                     rotateAnimation.start();
+                    buttonsImages[i][j].startAnimation(hyperAnimation);
+
+
 
                 }
             }
@@ -234,12 +246,11 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
             public void onFinish() {
                 for(int i =0; i<size ; i++){
                     for(int j =0; j<size ; j++){
-                        rotateAnimation = ObjectAnimator.ofFloat(buttonsImages[i][j],"rotation",0f,360f);
-                        rotateAnimation.setDuration(animationDuration);
+
                         fallAnimation = ObjectAnimator.ofFloat(buttonsImages[i][j],"y",1000f);
                         fallAnimation.setDuration(animationDuration);
-                        animatorSet.playTogether(rotateAnimation,fallAnimation);
-                        animatorSet.start();
+                        fallAnimation.start();
+                        explosion.explode(buttonsImages[i][j]);
                     }
                 }
 
