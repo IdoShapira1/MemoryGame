@@ -35,6 +35,7 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
     TextView name;
     TextView timerText;
     private ImageView buttonsImages[][];
+    private DatabaseHelper databaseHelper;
 
     long animationDuration = 2000; //milliseconds
     ObjectAnimator rotateAnimation;
@@ -46,11 +47,14 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
     private ArrayList imagesIds1 = new ArrayList();
     private ArrayList imagesIds2= new ArrayList();
     private int size;
+    long timeLeft;
+    int level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = new Intent(this,SensorService.class);
+        databaseHelper = new DatabaseHelper(this);
         bindService(i,serviceConnection, Context.BIND_AUTO_CREATE);
         setContentView(R.layout.activity_game_screen);
         int diff = getIntent().getIntExtra("diff",0); // get diff
@@ -61,6 +65,7 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
         size = getAmountOfButtons(diff);
         createButtonsImages();
         startTimer(diff);
+
     }
 
     @Override
@@ -155,13 +160,14 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
     private void winChecker(){
         winCounter++;
         if(winCounter== (size*size)/2){
+            long points = timeLeft*level;
+            databaseHelper.addData(name.getText().toString(),level,points);
             Toast.makeText(getApplicationContext(),"YOU WIN!",Toast.LENGTH_LONG).show();
             for(int i =0; i<size ; i++){
                 for(int j =0; j<size ; j++){
                     rotateAnimation = ObjectAnimator.ofFloat(buttonsImages[i][j],"rotation",0f,1080f);
                     rotateAnimation.setDuration(animationDuration*2);
                     rotateAnimation.start();
-
                 }
             }
 
@@ -214,10 +220,13 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
     private int getAmountOfButtons(int diff){
         switch (diff){
             case 60:
+                level = 3;
                 return 6;
             case 45:
+                level = 2;
                 return 4;
             case 30:
+                level = 1;
                 return 2;
         }
         return 0;
@@ -229,6 +238,7 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
         ct = new CountDownTimer(time*1000, 1000) {
 
             public void onTick(long millisUntilFinished) {
+                timeLeft = millisUntilFinished;
                 timerText.setText("seconds remaining: " + millisUntilFinished / 1000);
             }
             public void onFinish() {
