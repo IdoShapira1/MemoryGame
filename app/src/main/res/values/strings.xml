@@ -19,6 +19,7 @@
     <string name="button_hard">Hard</string>
     <string name="button_score">Best Scores</string>
     <string name="top_ten">Top 10 Scores</string>
+    <string name="google_maps_API_key">AIzaSyAzG-7LMeTzZDNTeEPpsRtufHRx5yzfHEI</string>
 
     <string name="timer">0</string>
 
