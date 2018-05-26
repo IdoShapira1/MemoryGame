@@ -2,14 +2,20 @@ package com.example.idoshapira_mbp.memorygame;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.TypedArray;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
@@ -20,7 +26,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GameScreen extends AppCompatActivity {
+public class GameScreen extends AppCompatActivity implements SensorService.SensorServiceListener {
+
+    final String TAG = "GameScreen";
+
 
     CountDownTimer ct;
     TextView name;
@@ -41,6 +50,8 @@ public class GameScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent i = new Intent(this,SensorService.class);
+        bindService(i,serviceConnection, Context.BIND_AUTO_CREATE);
         setContentView(R.layout.activity_game_screen);
         int diff = getIntent().getIntExtra("diff",0); // get diff
         name = (TextView) findViewById(R.id.nameGameScreen);
@@ -241,6 +252,28 @@ public class GameScreen extends AppCompatActivity {
                 },2000);
             }
         }.start();
+    }
+
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            if (iBinder instanceof SensorService.SensorServiceBinder) {
+                SensorService.SensorServiceBinder sensorServiceBinder = (SensorService.SensorServiceBinder) iBinder;
+                sensorServiceBinder.setListener(GameScreen.this);
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+        }
+    };
+
+
+    @Override
+    public void onSensorChanged(float[] values) {
+        Log.d(TAG,"X: "+values[0]+" Y:"+values[1]+" Z:"+values[2]);
+
     }
 
 }

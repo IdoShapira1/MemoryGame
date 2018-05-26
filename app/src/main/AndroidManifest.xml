@@ -36,7 +36,12 @@
         <activity
             android:name=".ScoreMapsActivity"
             android:label="@string/title_activity_score_maps" />
-        <activity android:name=".HighScores"></activity>
+        <activity android:name=".HighScores" />
+
+        <service
+            android:name=".SensorService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
