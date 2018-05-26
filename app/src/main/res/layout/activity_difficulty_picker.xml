@@ -9,6 +9,21 @@
     tools:layout_editor_absoluteY="81dp">
 
 
+    <Button
+        android:id="@+id/buttonScores"
+        android:layout_width="236dp"
+        android:layout_height="73dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/background_button"
+        android:text="@string/button_score"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonHard"
+        app:layout_constraintVertical_bias="0.762" />
 
     <Button
         android:id="@+id/buttonHard"
@@ -88,31 +103,5 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonEasy" />
-
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.example.idoshapira_mbp.memorygame.FragmentListScore"
-        android:layout_width="144dp"
-        android:layout_height="118dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonHard" />
-
-    <fragment
-        android:id="@+id/map2"
-        class="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="72dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.707"
-        app:layout_constraintStart_toEndOf="@+id/fragment"
-        app:layout_constraintTop_toBottomOf="@+id/buttonHard"
-        tools:context="com.example.idoshapira_mbp.memorygame.ScoreMapsActivity" />
 
 </android.support.constraint.ConstraintLayout>
