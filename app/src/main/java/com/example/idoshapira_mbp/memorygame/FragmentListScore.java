@@ -2,6 +2,7 @@ package com.example.idoshapira_mbp.memorygame;
 
 import android.app.Fragment;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -36,6 +38,11 @@ public class FragmentListScore extends Fragment {
         View view = inflater.inflate(R.layout.score_list_fragment,container,false);
 
         ListView lv = (ListView)view.findViewById(R.id.listScores);
+        TextView textView = new TextView(getContext());
+        textView.setText(R.string.top_ten);
+
+        lv.addHeaderView(textView);
+        lv.setBackgroundColor(Color.parseColor("#ffffff"));
 
         mDatabaseHelper = new DatabaseHelper(getContext());
 

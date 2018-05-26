@@ -18,6 +18,7 @@
     <string name="button_medium">Medium</string>
     <string name="button_hard">Hard</string>
     <string name="button_score">Best Scores</string>
+    <string name="top_ten">Top 10 Scores</string>
 
     <string name="timer">0</string>
 

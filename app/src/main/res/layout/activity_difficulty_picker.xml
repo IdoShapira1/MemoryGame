@@ -90,8 +90,8 @@
     <fragment
         android:id="@+id/fragment"
         android:name="com.example.idoshapira_mbp.memorygame.FragmentListScore"
-        android:layout_width="172dp"
-        android:layout_height="119dp"
+        android:layout_width="277dp"
+        android:layout_height="123dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
