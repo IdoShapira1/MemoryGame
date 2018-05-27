@@ -177,20 +177,17 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
                     rotateAnimation = ObjectAnimator.ofFloat(buttonsImages[i][j],"rotation",0f,1080f);
                     rotateAnimation.setDuration(animationDuration*2);
                     rotateAnimation.start();
-<<<<<<< HEAD
-=======
                     buttonsImages[i][j].startAnimation(hyperAnimation);
 
 
 
->>>>>>> b1cb5e2920bae5fce108c4e41a602b3378ac5989
                 }
             }
-
+            ct.cancel();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ct.cancel();
+
                     finish();
                 }
             },2000);
