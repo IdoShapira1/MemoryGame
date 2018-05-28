@@ -29,6 +29,7 @@ import android.os.CountDownTimer;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Stack;
 
 import tyrantgit.explosionfield.ExplosionField;
 
@@ -49,10 +50,13 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
     AnimatorSet animatorSet;
     ExplosionField explosion;
 
+    private float[] startValues;
     int imageId1 = -1; //helps with finding a match
     int winCounter = 0;
+    private float DIFF = 6;
     private ArrayList imagesIds1 = new ArrayList();
     private ArrayList imagesIds2= new ArrayList();
+    private Stack<Integer> flippedImagesIds = new Stack<Integer>();
     private int size;
     long timeLeft;
     int level;
@@ -61,8 +65,8 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = new Intent(this,SensorService.class);
-        databaseHelper = new DatabaseHelper(this);
         bindService(i,serviceConnection, Context.BIND_AUTO_CREATE);
+        databaseHelper = new DatabaseHelper(this);
         setContentView(R.layout.activity_game_screen);
         int diff = getIntent().getIntExtra("diff",0); // get diff
         name = (TextView) findViewById(R.id.nameGameScreen);
@@ -78,10 +82,19 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unbindService(serviceConnection);
         ct.cancel();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
 
     private void createButtonsImages() {
@@ -134,16 +147,7 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
         if(imageId1 == -1)
             imageId1 = imagePressed.getId();
         else if (imageId1 == imagePressed.getId()){ //match!
-            imagePressed.setId(-1);
-            for(int i =0; i<size ; i++){
-                for(int j =0; j<size ; j++){
-                    if (buttonsImages[i][j].getId()== imageId1)
-                    {
-                        buttonsImages[i][j].setId(-1);
-                        break;
-                    }
-                }
-            }
+            flippedImagesIds.push(imagePressed.getId());
             winChecker();
             imageId1 = -1;
         }else{ // no match
@@ -178,9 +182,6 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
                     rotateAnimation.setDuration(animationDuration*2);
                     rotateAnimation.start();
                     buttonsImages[i][j].startAnimation(hyperAnimation);
-
-
-
                 }
             }
             ct.cancel();
@@ -276,7 +277,6 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
         }.start();
     }
 
-
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -288,13 +288,53 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
+            unbindService(serviceConnection);
         }
     };
 
-
     @Override
     public void onSensorChanged(float[] values) {
-        Log.d(TAG,"X: "+values[0]+" Y:"+values[1]+" Z:"+values[2]);
+        if(startValues==null){
+            startValues = new float[3];
+            startValues[0] = values[0];
+            startValues[1] = values[1];
+            startValues[2] = values[2];
+        }
+        //check if won/no card flipped here
+        if (winCounter== (size*size)/2 || flippedImagesIds.empty())
+                return;
+
+        float x=Math.abs(values[0]);
+        float y=Math.abs(values[1]);
+        float z=Math.abs(values[2]);
+        float sx=Math.abs(startValues[0]);
+        float sy=Math.abs(startValues[1]);
+        float sz=Math.abs(startValues[2]);
+
+        if(x > sx + DIFF || y > sy + DIFF || z > sz + DIFF)
+        {
+            flipPictureBack();
+            Toast.makeText(getApplicationContext(),"Don't move your phone!",Toast.LENGTH_LONG).show();
+
+        }
+    }
+
+    private void flipPictureBack(){
+        int saved_id=flippedImagesIds.pop();
+        int counter=0;
+        for(int i =0; i<size ; i++){
+            for(int j =0; j<size ; j++) {
+                if (saved_id == buttonsImages[i][j].getId()){
+                    counter++;
+                    setButtonActivity(buttonsImages[i][j],R.drawable.squarebutton);
+                    buttonsImages[i][j].setClickable(true);
+                }
+            }
+            if(counter==2)
+                break;
+        }
+        if(counter==2)
+            winCounter--;
 
     }
 
