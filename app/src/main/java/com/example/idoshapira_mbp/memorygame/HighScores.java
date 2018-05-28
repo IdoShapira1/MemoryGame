@@ -1,6 +1,9 @@
 package com.example.idoshapira_mbp.memorygame;
 
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,8 +22,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import java.util.List;
+import java.util.Locale;
 
 public class HighScores extends AppCompatActivity implements OnMapReadyCallback{
 
@@ -34,12 +41,13 @@ public class HighScores extends AppCompatActivity implements OnMapReadyCallback{
     private static final int DEFAULT_ZOOM = 16;
     private GeoDataClient mGeoDataClient;
     private PlaceDetectionClient  mPlaceDetectionClient;
+    private DatabaseHelper mDatabaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_scores);
-
+        mDatabaseHelper = new DatabaseHelper(this);
         // Construct a GeoDataClient.
         mGeoDataClient = Places.getGeoDataClient(this, null);
 
@@ -62,7 +70,20 @@ public class HighScores extends AppCompatActivity implements OnMapReadyCallback{
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
+
+        addMarks();
     }
+
+    private void addMarks() {
+        Cursor data = mDatabaseHelper.getTop10();
+        while(data.moveToNext()){
+            LatLng latLng = new LatLng(data.getDouble(4), data.getDouble(5));
+            mMap.addMarker(new MarkerOptions().position(latLng).
+                    title(data.getString(1)).
+                    snippet("score :"+data.getLong(2)+" "+getCompleteAddressString(latLng.latitude,latLng.longitude)));
+        }
+    }
+
     private void updateLocationUI() {
         if (mMap == null) {
             return;
@@ -149,6 +170,29 @@ public class HighScores extends AppCompatActivity implements OnMapReadyCallback{
             }
         }
         updateLocationUI();
+    }
+    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                strAdd = strReturnedAddress.toString();
+                Log.w("My Current loction address", strReturnedAddress.toString());
+            } else {
+                Log.w("My Current loction address", "No Address returned!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.w("My Current loction address", "Canont get Address!");
+        }
+        return strAdd;
     }
 
 }
