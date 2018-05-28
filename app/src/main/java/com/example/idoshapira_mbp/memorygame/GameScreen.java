@@ -6,17 +6,16 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.os.IBinder;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.IBinder;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -25,8 +24,8 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.os.CountDownTimer;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -177,13 +176,7 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
                     rotateAnimation = ObjectAnimator.ofFloat(buttonsImages[i][j],"rotation",0f,1080f);
                     rotateAnimation.setDuration(animationDuration*2);
                     rotateAnimation.start();
-<<<<<<< HEAD
-=======
                     buttonsImages[i][j].startAnimation(hyperAnimation);
-
-
-
->>>>>>> b1cb5e2920bae5fce108c4e41a602b3378ac5989
                 }
             }
 
