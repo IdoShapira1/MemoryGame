@@ -36,7 +36,7 @@ public class HighScores extends AppCompatActivity implements OnMapReadyCallback{
     private GoogleMap mMap;
     private Location mLastKnownLocation;
     private boolean mLocationPermissionGranted;
-    private LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
+    private LatLng mDefaultLocation = new LatLng(32.113819, 34.817794);
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private static final int DEFAULT_ZOOM = 16;
     private GeoDataClient mGeoDataClient;
@@ -96,7 +96,6 @@ public class HighScores extends AppCompatActivity implements OnMapReadyCallback{
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
                 mLastKnownLocation = null;
-                //getLocationPermission();
             }
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());

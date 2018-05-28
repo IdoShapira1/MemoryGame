@@ -357,14 +357,13 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             Log.d(TAG,"No GPS Trun on");
-        }
+        }try{
             lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
-        try{
             lastKnownLocation.getLongitude();
-        }catch (NullPointerException e){
+        }catch (Exception e){
             lastKnownLocation = new Location("default location");
-            lastKnownLocation.setLatitude(-33.8523341);
-            lastKnownLocation.setLongitude(151.2106085);
+            lastKnownLocation.setLatitude(32.113819);
+            lastKnownLocation.setLongitude(34.817794);
         }
     }
 
