@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -46,11 +45,10 @@ public class FragmentListScore extends Fragment {
 
         mDatabaseHelper = new DatabaseHelper(getContext());
 
-        Cursor data = mDatabaseHelper.getAllData();
+        Cursor data = mDatabaseHelper.getTop10();
         ArrayList<PlayerEntry> listDataPlayers = new ArrayList<>();
         while(data.moveToNext()){
             listDataPlayers.add(new PlayerEntry(data.getString(1),data.getDouble(2),data.getInt(3)));
-
         }
 
         PlayerEntryAdapter adapter = new PlayerEntryAdapter(getContext(),R.layout.adapter_view_layout,listDataPlayers);

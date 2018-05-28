@@ -65,6 +65,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery(query,null);
         return data;
     }
+    public Cursor getTop10(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "select * from (select * from "+TABLE_NAME+" order by "+COL3 +" ASC limit 10) order by " +COL3+" DESC ";
+        Cursor data = db.rawQuery(query,null);
+        return data;
+    }
 
     public Cursor getEasyTable(){
         SQLiteDatabase db = this.getWritableDatabase();
