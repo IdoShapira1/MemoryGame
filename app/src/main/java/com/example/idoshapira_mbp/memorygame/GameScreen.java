@@ -142,7 +142,7 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
                 buttonsImages[row][col] = buttonImage;
                 explosion = ExplosionField.attach2Window(this);
                 tableRow.addView(buttonImage);
-                buttonImage.setBackgroundResource(R.drawable.squarebutton);
+                buttonImage.setBackgroundResource(R.drawable.question_mark);
             }
         }
 
@@ -157,12 +157,12 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
             winChecker();
             imageId1 = -1;
         } else { // no match
-            setButtonActivity(imagePressed, R.drawable.squarebutton);
+            setButtonActivity(imagePressed, R.drawable.question_mark);
             imagePressed.setClickable(true);
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
                     if (buttonsImages[i][j].getId() == imageId1) {
-                        setButtonActivity(buttonsImages[i][j], R.drawable.squarebutton);
+                        setButtonActivity(buttonsImages[i][j], R.drawable.question_mark);
                         buttonsImages[i][j].setClickable(true);
 
                     }
@@ -333,7 +333,7 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
             for (int j = 0; j < size; j++) {
                 if (saved_id == buttonsImages[i][j].getId()) {
                     counter++;
-                    setButtonActivity(buttonsImages[i][j], R.drawable.squarebutton);
+                    setButtonActivity(buttonsImages[i][j], R.drawable.question_mark);
                     buttonsImages[i][j].setClickable(true);
                 }
             }
