@@ -20,6 +20,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL1 = "name";
     private static final String COL2 = "diff";
     private static final String COL3 = "score";
+    private static final String COL4 = "lat";
+    private static final String COL5 = "lng";
 
     public DatabaseHelper(Context context) {
         super(context, TABLE_NAME, null, 1);
@@ -34,19 +36,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE "+TABLE_NAME +" (ID INTEGER PRIMARY KEY AUTOINCREMENT, "+ COL1+" TEXT, "+COL3+" LONG, "+COL2+" INTEGER)";
+        String createTable = "CREATE TABLE "+TABLE_NAME+" (ID INTEGER PRIMARY KEY AUTOINCREMENT, "+COL1+" TEXT, "+COL3+" LONG, "
+                +COL2+" INTEGER, "+COL4+" REAL, "+COL5+" REAL )";
         db.execSQL(createTable);
 
     }
 
 
 
-    public boolean addData(String name,int diff,long score){
+    public boolean addData(String name,int diff,long score,double lat,double lng){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL1,name);
         contentValues.put(COL3,score);
         contentValues.put(COL2,diff);
+        contentValues.put(COL4,lat);
+        contentValues.put(COL5,lng);
 
 
         Log.d(TAG, "addData: Adding "+name+" to "+TABLE_NAME);
@@ -67,7 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public Cursor getTop10(){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "select * from (select * from "+TABLE_NAME+" order by "+COL3 +" ASC limit 10) order by " +COL3+" DESC ";
+        String query = "SELECT * FROM "+TABLE_NAME+" ORDER BY "+COL3 +" DESC LIMIT 10";
         Cursor data = db.rawQuery(query,null);
         return data;
     }
