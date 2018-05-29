@@ -31,7 +31,6 @@ import java.util.Locale;
 
 public class HighScores extends AppCompatActivity implements OnMapReadyCallback{
 
-    private static final String TAG = HighScores.class.getSimpleName();
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private GoogleMap mMap;
     private Location mLastKnownLocation;

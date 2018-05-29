@@ -42,8 +42,6 @@ import tyrantgit.explosionfield.ExplosionField;
 public class GameScreen extends AppCompatActivity implements SensorService.SensorServiceListener {
 
     final String TAG = "GameScreen";
-
-
     CountDownTimer ct;
     TextView name;
     TextView timerText;
@@ -177,7 +175,7 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
     private void winChecker() {
         winCounter++;
         if (winCounter == (size * size) / 2) {
-            long points = timeLeft * level;
+            long points = (timeLeft/100) * (size*size/2);
             getLocation();
             databaseHelper.addData(name.getText().toString(),level,points,lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude());
             Toast.makeText(getApplicationContext(), "YOU WIN!", Toast.LENGTH_LONG).show();
@@ -338,21 +336,13 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
         }
         if (counter == 2)
             winCounter--;
-
     }
 
     private void getLocation() {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.GPS_PROVIDER;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            Log.d(TAG,"No GPS Trun on");
+            Log.d(TAG,"No GPS - Turn on");
         }try{
             lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
             lastKnownLocation.getLongitude();

@@ -12,7 +12,6 @@ import android.widget.EditText;
 
 public class WelcomeScreen extends AppCompatActivity  {
 
-    final String TAG = "WelcomeScreen";
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +35,9 @@ public class WelcomeScreen extends AppCompatActivity  {
 
     }
     private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            boolean mLocationPermissionGranted = true;
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},

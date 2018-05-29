@@ -64,12 +64,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
     }
 
-    public Cursor getAllData(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM "+TABLE_NAME;
-        Cursor data = db.rawQuery(query,null);
-        return data;
-    }
     public Cursor getTop10(){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM "+TABLE_NAME+" ORDER BY "+COL3 +" DESC LIMIT 10";
@@ -77,24 +71,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
-    public Cursor getEasyTable(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM "+TABLE_NAME+" WHERE diff=0";
-        Cursor data = db.rawQuery(query,null);
-        return data;
-    }
-
-    public Cursor getMediumTable(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM "+TABLE_NAME+" WHERE diff=1";
-        Cursor data = db.rawQuery(query,null);
-        return data;
-    }
-
-    public Cursor getHardTable(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM "+TABLE_NAME+" WHERE diff=2";
-        Cursor data = db.rawQuery(query,null);
-        return data;
-    }
 }
