@@ -54,7 +54,7 @@ public class PlayerEntryAdapter extends ArrayAdapter<PlayerEntry> {
         //get the persons information
         String name = getItem(position).getplayerName();
         Double score = getItem(position).getScore();
-        Integer diff = getItem(position).getDiff();
+        String diff = getItem(position).getDiff();
 
         //Create the person object with the information
         PlayerEntry person = new PlayerEntry(name,score,diff);
@@ -68,7 +68,7 @@ public class PlayerEntryAdapter extends ArrayAdapter<PlayerEntry> {
 
         tvName.setText(name);
         tvScore.setText(score.toString());
-        tvDiff.setText(diff.toString());
+        tvDiff.setText(diff);
 
         return convertView;
     }

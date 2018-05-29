@@ -44,7 +44,9 @@ public class FragmentListScore extends Fragment {
         Cursor data = mDatabaseHelper.getTop10();
         ArrayList<PlayerEntry> listDataPlayers = new ArrayList<>();
         while(data.moveToNext()){
-            listDataPlayers.add(new PlayerEntry(data.getString(1),data.getDouble(2),data.getInt(3)));
+            int level = data.getInt(3);
+
+            listDataPlayers.add(new PlayerEntry(data.getString(1),data.getDouble(2),getLevelName(level)));
         }
 
         PlayerEntryAdapter adapter = new PlayerEntryAdapter(getContext(),R.layout.adapter_view_layout,listDataPlayers);
@@ -56,6 +58,18 @@ public class FragmentListScore extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    private String getLevelName(int lvl){
+        switch (lvl){
+            case 1:
+                return "Easy";
+            case 2:
+                return "Medium";
+            case 3:
+                return "Hard";
+        }
+        return null;
     }
 
 }
