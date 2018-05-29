@@ -22,10 +22,6 @@ public class FragmentListScore extends Fragment {
     DatabaseHelper mDatabaseHelper;
 
 
-    String countries[] = {"Austria","Belgium","Israel"};
-
-
-
     public FragmentListScore(){
         //required empty constructor
     }
@@ -52,10 +48,7 @@ public class FragmentListScore extends Fragment {
         }
 
         PlayerEntryAdapter adapter = new PlayerEntryAdapter(getContext(),R.layout.adapter_view_layout,listDataPlayers);
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,listData);
          lv.setAdapter(adapter);
-
-
 
         return view;
     }
@@ -63,8 +56,6 @@ public class FragmentListScore extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-      //  ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,countries);
-
     }
 
 }

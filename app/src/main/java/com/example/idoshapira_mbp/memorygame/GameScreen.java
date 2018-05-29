@@ -179,8 +179,6 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
         if (winCounter == (size * size) / 2) {
             long points = timeLeft * level;
             getLocation();
-            Log.d(TAG, "the latitude is :" + lastKnownLocation.getLatitude());
-            Log.d(TAG, "the longitude is :" + lastKnownLocation.getLongitude());
             databaseHelper.addData(name.getText().toString(),level,points,lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude());
             Toast.makeText(getApplicationContext(), "YOU WIN!", Toast.LENGTH_LONG).show();
             final Animation hyperAnimation = AnimationUtils.loadAnimation(GameScreen.this, R.anim.explosion);
@@ -217,9 +215,8 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
         return id;
     }
 
-    private void setButtonActivity(ImageView button, int pictureId) { // add picture and turn unclickable
-
-        //set background with scaling
+    private void setButtonActivity(ImageView button, int pictureId) {
+        // add picture and turn unclickable
         int newWidth = button.getWidth();
         int newHeight = button.getHeight();
         Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), pictureId);
@@ -232,7 +229,7 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
 
     private int getRandomImage(int size) {
         TypedArray imgs = getResources().obtainTypedArray(R.array.random_imgs);
-        int id = imgs.getResourceId(new Random().nextInt(size), -1); //-1 is default if nothing is found (we don't care)
+        int id = imgs.getResourceId(new Random().nextInt(size), -1); //-1 is default if nothing is found
         imgs.recycle();
         return id;
     }
@@ -257,7 +254,6 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
     private void startTimer(int time) {
 
         ct = new CountDownTimer(time * 1000, 1000) {
-
             public void onTick(long millisUntilFinished) {
                 timeLeft = millisUntilFinished;
                 timerText.setText("seconds remaining: " + millisUntilFinished / 1000);
