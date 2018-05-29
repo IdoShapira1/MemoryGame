@@ -57,7 +57,7 @@ public class GameScreen extends AppCompatActivity implements SensorService.Senso
     private float[] startValues;
     int imageId1 = -1; //helps with finding a match
     int winCounter = 0;
-    private float DIFF = 6;
+    private float DIFF = 8;
     private ArrayList imagesIds1 = new ArrayList();
     private ArrayList imagesIds2 = new ArrayList();
     private Stack<Integer> flippedImagesIds = new Stack<Integer>();
