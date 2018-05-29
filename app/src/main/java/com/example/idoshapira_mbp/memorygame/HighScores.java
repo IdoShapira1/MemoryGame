@@ -50,10 +50,8 @@ public class HighScores extends AppCompatActivity implements OnMapReadyCallback{
         mDatabaseHelper = new DatabaseHelper(this);
         // Construct a GeoDataClient.
         mGeoDataClient = Places.getGeoDataClient(this, null);
-
         // Construct a PlaceDetectionClient.
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
-
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -62,7 +60,6 @@ public class HighScores extends AppCompatActivity implements OnMapReadyCallback{
     }
     public void onMapReady(GoogleMap map) {
         mMap = map;
-
         // prompt the user for permission
         getLocationPermission();
         // Turn on the My Location layer and the related control on the map.
@@ -83,7 +80,6 @@ public class HighScores extends AppCompatActivity implements OnMapReadyCallback{
                     snippet("score :"+data.getLong(2)+" "+getCompleteAddressString(latLng.latitude,latLng.longitude)));
         }
     }
-
     private void updateLocationUI() {
         if (mMap == null) {
             return;
@@ -120,14 +116,10 @@ public class HighScores extends AppCompatActivity implements OnMapReadyCallback{
                                         new LatLng(mLastKnownLocation.getLatitude(),
                                                 mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
                             }catch (NullPointerException e){
-                                Log.d(TAG, "Current location is null. Using defaults.");
-                                Log.e(TAG, "Exception: gps is turn off ");
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
                                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
                             }
                         } else {
-                            Log.d(TAG, "Current location is null. Using defaults.");
-                            Log.e(TAG, "Exception: %s", task.getException());
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
                             mMap.getUiSettings().setMyLocationButtonEnabled(false);
                         }
@@ -139,11 +131,6 @@ public class HighScores extends AppCompatActivity implements OnMapReadyCallback{
         }
     }
     private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -183,13 +170,9 @@ public class HighScores extends AppCompatActivity implements OnMapReadyCallback{
                     strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
                 }
                 strAdd = strReturnedAddress.toString();
-                Log.w("My Current loction address", strReturnedAddress.toString());
-            } else {
-                Log.w("My Current loction address", "No Address returned!");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.w("My Current loction address", "Canont get Address!");
         }
         return strAdd;
     }
