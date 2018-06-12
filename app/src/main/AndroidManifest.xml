@@ -17,15 +17,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WelcomeScreen">
+        <activity android:name=".WelcomeScreen"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DifficultyPicker" />
-        <activity android:name=".GameScreen" />
+        <activity android:name=".DifficultyPicker"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".GameScreen"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -36,13 +40,17 @@
 
         <activity
             android:name=".ScoreMapsActivity"
-            android:label="@string/title_activity_score_maps" />
+            android:label="@string/title_activity_score_maps"
+            android:screenOrientation="portrait"/>
         <activity android:name=".HighScores" />
 
         <service
             android:name=".SensorService"
             android:enabled="true"
             android:exported="true"></service>
+
+
     </application>
+
 
 </manifest>
